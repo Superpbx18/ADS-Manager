@@ -420,3 +420,16 @@ Prototype เดิมมี Overview, Event Stream, Segments และ Meta Syn
 [6]: https://developers.facebook.com/documentation/facebook-login/guides/access-tokens "Meta: Access Tokens for Meta Technologies"
 
 [7]: https://developers.facebook.com/docs/business-management-apis/system-users/install-apps-and-generate-tokens/ "Meta: Install Apps and Generate System User Tokens"
+
+
+## 15. แนวทาง Multi-workspace
+
+แนะนำให้ใช้โมเดล **หนึ่ง Workspace ต่อหนึ่งธุรกิจ/แบรนด์** และให้ผู้ใช้หนึ่งคนเป็นสมาชิกได้หลาย Workspace การเชื่อม Meta ควรผูกกับ Workspace ไม่ใช่ผูกกับ User โดยตรง เพื่อให้แต่ละธุรกิจมี Business Manager, Ad Account, Dataset, Token, Segment, Campaign และนโยบาย Consent แยกกันอย่างชัดเจน
+
+ทุกตารางและทุก REST API ควรมี `workspace_id` เป็นขอบเขตบังคับ พร้อมตรวจสิทธิ์จาก Membership ก่อนอ่านหรือเขียนข้อมูล ห้ามใช้เพียง User ID เป็นตัวกรองข้อมูลหลัก เพราะผู้ใช้คนเดียวอาจเข้าถึงหลายธุรกิจได้
+
+โครงสร้างขั้นต่ำที่ควรมีคือ `workspaces`, `workspace_members`, `workspace_roles`, `meta_connections`, `meta_tokens`, `datasets`, `ad_accounts`, `events`, `customers`, `segments`, `campaign_snapshots` และ `audit_logs` โดย `meta_connections.workspace_id` เป็นจุดเชื่อมสำคัญที่ทำให้ Token และปลายทางไม่ปะปนกัน
+
+สิทธิ์ควรแบ่งอย่างน้อยเป็น `owner`, `admin`, `analyst`, `operator` และ `viewer` โดยกำหนดว่า Owner/Admin จัดการ Connection และ Token ได้, Analyst ดู Campaign และ Report ได้, Operator จัดการ Event/Retry ได้ และ Viewer อ่านข้อมูลได้อย่างเดียว ทุกการสลับ Workspace ควรบันทึก Audit Log พร้อม User ID, Workspace ID, IP และเวลา
+
+ควรเริ่มจากการแยกเชิง Logical ด้วย `workspace_id` และ Row-Level Authorization ก่อน แล้วค่อยพิจารณาแยก Database หรือ Schema เมื่อมีข้อกำหนดด้านปริมาณข้อมูลหรือการแยกผู้เช่าระดับสูงขึ้น

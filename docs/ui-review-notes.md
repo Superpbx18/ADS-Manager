@@ -15,3 +15,7 @@ The Dashboard now shows an active System User Token with expiry in 47 days, last
 ## Integration Center Review
 
 The Integrations page now opens as Meta API Integration Center. Browser testing confirmed seven connected components are listed: Business Manager, Developer App, Dataset/Pixel, System User Token, Conversions API, Custom Audiences, and Campaign Insights. The six-step setup runbook is interactive; selecting step 4 updates the detail panel to System User Token and shows the Facebook + central-system ownership guidance.
+
+## Multi-workspace Review
+
+The sidebar now has a workspace switcher showing three workspaces: Northstar Commerce, Lumen Finance, and Sandbox Workspace. Browser testing confirmed the menu opens, selecting Lumen Finance updates the active workspace label, and Settings opens Workspace Management with per-workspace Meta Business details, members, event volume, connection status, and a workspace-scoped settings note.
