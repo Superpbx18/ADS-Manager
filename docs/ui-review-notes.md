@@ -11,3 +11,7 @@ The Meta Connection Wizard opens from the dashboard CTA and exposes six steps: B
 ## Token, Test Events, and Campaign Review
 
 The Dashboard now shows an active System User Token with expiry in 47 days, last health-check time, a 14-day alert control, encrypted-storage guidance, and token management action. The Test Events page was opened successfully; selecting a rejected Purchase displayed the Meta-style error code 100, message, type, fbtrace_id, and match-quality checks. The Campaign Insights page was opened successfully and shows the connected Ad Account in Read-only mode with ads_read, KPI cards, and campaign table.
+
+## Integration Center Review
+
+The Integrations page now opens as Meta API Integration Center. Browser testing confirmed seven connected components are listed: Business Manager, Developer App, Dataset/Pixel, System User Token, Conversions API, Custom Audiences, and Campaign Insights. The six-step setup runbook is interactive; selecting step 4 updates the detail panel to System User Token and shows the Facebook + central-system ownership guidance.
