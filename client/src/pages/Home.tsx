@@ -23,6 +23,8 @@ import {
   Link2,
   ListFilter,
   LockKeyhole,
+  KeyRound,
+  XCircle,
   Menu,
   MoreHorizontal,
   Network,
@@ -42,7 +44,7 @@ import {
 } from "lucide-react";
 
 
-type Section = "ภาพรวม" | "Event Stream" | "Segments" | "Meta Sync" | "Integrations" | "Settings";
+type Section = "ภาพรวม" | "Event Stream" | "Segments" | "Meta Sync" | "Test Events" | "Campaigns" | "Integrations" | "Settings";
 type EventStatus = "ส่งแล้ว" | "รอส่ง" | "ถูกกรอง";
 
 type NavItem = {
@@ -56,6 +58,8 @@ const navItems: NavItem[] = [
   { label: "Event Stream", caption: "Live activity", icon: Activity },
   { label: "Segments", caption: "Customer groups", icon: Layers3 },
   { label: "Meta Sync", caption: "Audience delivery", icon: Send },
+  { label: "Test Events", caption: "Verify & debug", icon: ShieldCheck },
+  { label: "Campaigns", caption: "Read-only insights", icon: TrendingUp },
 ];
 
 const setupItems: NavItem[] = [
@@ -272,10 +276,43 @@ function MetaConnectionWizard({ onClose }: { onClose: () => void }) {
   </div></div>;
 }
 
+function TokenHealthCard({ onManage }: { onManage: () => void }) {
+  const [acknowledged, setAcknowledged] = useState(false);
+  return <div className="token-health-card"><div className="token-health-main"><div className="token-health-icon"><KeyRound size={18} /></div><div><div className="section-kicker">SYSTEM USER TOKEN</div><strong>Meta API Access Token</strong><span>Token ID · EAAB••••••9QZ</span></div><span className="token-health-status"><i /> Active</span></div><div className="token-health-bar"><span /></div><div className="token-health-meta"><div><small>หมดอายุใน</small><strong>47 วัน</strong><span>24 พ.ย. 2026 · 23:59 น.</span></div><div><small>ตรวจสอบล่าสุด</small><strong>เมื่อ 4 นาทีที่แล้ว</strong><span>Auto health check ทุก 15 นาที</span></div><div className="token-health-actions">{!acknowledged && <button className="token-alert" onClick={() => setAcknowledged(true)}><Bell size={13} /> แจ้งเตือนเมื่อเหลือ 14 วัน</button>}<button className="secondary-button" onClick={onManage}><Settings2 size={13} /> จัดการ Token</button></div></div><div className="token-health-note"><ShieldCheck size={14} /><span>Token ถูกเก็บแบบเข้ารหัส ระบบจะเตือนใน Dashboard และส่ง Notification เมื่อใกล้หมดอายุ</span></div></div>;
+}
+
+function TestEventsPage() {
+  const [selected, setSelected] = useState(0);
+  const testHistory = [
+    { event: "Purchase", id: "test_deposit_001", status: "รับแล้ว", time: "วันนี้ 14:22", quality: "Good", error: "ไม่มี Error", tone: "success" },
+    { event: "CompleteRegistration", id: "test_register_004", status: "รับแล้ว", time: "วันนี้ 14:20", quality: "Good", error: "ไม่มี Error", tone: "success" },
+    { event: "Purchase", id: "test_deposit_000", status: "Rejected", time: "วันนี้ 13:48", quality: "Needs fix", error: "(#100) Missing parameter: event_source_url", tone: "danger" },
+    { event: "ViewContent", id: "test_view_018", status: "รับแล้ว", time: "เมื่อวาน 19:04", quality: "Fair", error: "User data match ต่ำ", tone: "warning" },
+  ];
+  const current = testHistory[selected];
+  return <PageShell eyebrow="TEST EVENTS & DEBUG" title="ประวัติการส่ง Test Event" description="ตรวจว่า Event จากระบบกลางถูกส่งถึง Meta จริงหรือไม่ ดู Match Quality และ Error ที่ต้องแก้ก่อนเปิดใช้งาน Production."><div className="test-summary-grid"><div className="mini-stat"><span className="kpi-icon cyan"><CheckCircle2 size={16} /></span><div><small>Test events ทั้งหมด</small><strong>24</strong></div></div><div className="mini-stat"><span className="kpi-icon violet"><Target size={16} /></span><div><small>Accepted by Meta</small><strong>21</strong></div></div><div className="mini-stat"><span className="kpi-icon coral"><XCircle size={16} /></span><div><small>ต้องแก้ไข</small><strong>3</strong></div></div><div className="mini-stat"><span className="kpi-icon amber"><Gauge size={16} /></span><div><small>Avg match quality</small><strong>8.2/10</strong></div></div></div><div className="test-events-layout"><section className="panel test-history-panel"><div className="panel-heading"><div><div className="section-kicker">TEST HISTORY</div><h2>รายการทดสอบล่าสุด</h2></div><button className="primary-button"><Send size={14} /> ส่ง Test Event ใหม่</button></div><div className="test-history-list">{testHistory.map((item, index) => <button className={`test-history-row ${selected === index ? "selected" : ""}`} key={item.id} onClick={() => setSelected(index)}><span className={`log-status ${item.tone}`}><>{item.tone === "success" ? <Check size={13} /> : item.tone === "danger" ? <X size={13} /> : <Clock3 size={13} />}</></span><div><strong>{item.event}</strong><small>{item.id} · {item.time}</small></div><span className={`quality-badge ${item.quality.toLowerCase().replace(" ", "-")}`}>{item.quality}</span><StatusPill status={item.status} /></button>)}</div></section><section className="panel test-detail-panel"><div className="section-kicker">EVENT DETAIL</div><h2>{current.event} <span className="detail-id">{current.id}</span></h2><div className={`test-result-banner ${current.tone}`}><span>{current.tone === "success" ? <CheckCircle2 size={16} /> : current.tone === "danger" ? <XCircle size={16} /> : <Clock3 size={16} />}</span><div><strong>{current.status === "Rejected" ? "Meta ปฏิเสธ Event นี้" : "Meta รับ Event แล้ว"}</strong><small>{current.error}</small></div></div><div className="detail-section"><div className="detail-label">META RESPONSE</div><pre>{current.tone === "danger" ? `{
+  "error": {
+    "message": "Invalid parameter",
+    "type": "OAuthException",
+    "code": 100,
+    "fbtrace_id": "A1b2C3d4"
+  }
+}` : `{
+  "events_received": 1,
+  "messages": [],
+  "fbtrace_id": "Z9y8X7w6"
+}`}</pre></div><div className="detail-section"><div className="detail-label">MATCH QUALITY</div><div className="match-quality-row"><span>Phone (hashed)</span><strong className="good">Matched</strong></div><div className="match-quality-row"><span>fbp / fbc</span><strong className={current.tone === "warning" ? "fair" : "good"}>{current.tone === "warning" ? "Partial" : "Matched"}</strong></div><div className="match-quality-row"><span>event_id deduplication</span><strong className="good">Ready</strong></div></div><button className="secondary-button full"><Download size={14} /> Download debug payload</button></section></div></PageShell>;
+}
+
+function CampaignsPage() {
+  return <PageShell eyebrow="MARKETING API · READ-ONLY" title="Campaign Insights" description="ดูภาพรวม Campaign และประสิทธิภาพโฆษณาจาก Business Manager โดยไม่ให้ระบบกลางแก้ไขหรือเปิด-ปิดแคมเปญ."><div className="campaign-connect-banner"><div className="campaign-connect-icon"><TrendingUp size={21} /></div><div><strong>เชื่อมต่อ Ad Account แล้ว</strong><p>Northstar Commerce · act_17841••• · สิทธิ์ปัจจุบัน: ads_read</p></div><span className="connected-label"><i /> Read-only</span><button className="secondary-button">จัดการสิทธิ์ <Settings2 size={14} /></button></div><div className="campaign-kpis"><div><small>Spend วันนี้</small><strong>฿48,290</strong><span className="positive">+8.4%</span></div><div><small>Purchases</small><strong>1,842</strong><span className="positive">+12.1%</span></div><div><small>Cost / Purchase</small><strong>฿26.21</strong><span className="positive">-4.8%</span></div><div><small>ROAS (reported)</small><strong>3.42x</strong><span className="positive">+0.3x</span></div></div><section className="panel campaign-table-panel"><div className="panel-heading"><div><div className="section-kicker">ACTIVE CAMPAIGNS</div><h2>แคมเปญล่าสุด</h2></div><button className="ghost-button">วันนี้ <ChevronDown size={14} /></button></div><div className="campaign-table"><div className="campaign-table-head"><span>CAMPAIGN</span><span>STATUS</span><span>SPEND</span><span>PURCHASE</span><span>CPA</span><span>ROAS</span></div>{[["Q3 Deposit · Broad", "Active", "฿21,480", "842", "฿25.51", "3.84x"], ["High-value Lookalike 1%", "Active", "฿16,820", "594", "฿28.32", "3.21x"], ["Retarget · Registered", "Learning", "฿7,450", "312", "฿23.88", "3.08x"], ["Promo Sep · Interest", "Paused", "฿2,540", "94", "฿27.02", "2.76x"]].map((row, index) => <div className="campaign-table-row" key={row[0]}><strong><span className="campaign-color" style={{ background: index === 0 ? "var(--coral)" : index === 1 ? "var(--cyan)" : index === 2 ? "var(--violet)" : "var(--amber)" }} />{row[0]}</strong><span className={`campaign-status ${row[1].toLowerCase()}`}>{row[1]}</span><span>{row[2]}</span><span>{row[3]}</span><span>{row[4]}</span><b>{row[5]}</b></div>)}</div></section><div className="campaign-note"><ShieldCheck size={15} /><span>โหมดนี้ใช้ <strong>ads_read</strong> เท่านั้น ระบบจึงอ่าน Campaign, Ad Set, Ad และ Insights ได้ แต่ไม่สามารถแก้ไขงบประมาณหรือสถานะแคมเปญ</span></div></PageShell>;
+}
+
 function MetaSyncPage({ onSync, syncing }: { onSync: () => void; syncing: boolean }) {
   const [wizardOpen, setWizardOpen] = useState(false);
   return <PageShell eyebrow="META API DELIVERY" title="Meta API Delivery Dashboard" description="ดูสุขภาพการส่งข้อมูลจากระบบกลางเข้า Meta ตั้งแต่รับ Event, ตรวจคุณภาพ, เข้าคิว, Retry จนถึง API response ในหน้าจอเดียว.">
     <div className="sync-banner"><div className="sync-banner-icon"><CheckCircle2 size={24} /></div><div><strong>Meta API ทำงานปกติ</strong><p>Last successful delivery · วันนี้ 14:28 น. · ทุกปลายทางตอบสนองปกติ</p></div><span className="api-latency"><Activity size={13} /> 412 ms avg</span><button className="primary-button" onClick={onSync} disabled={syncing}>{syncing ? <><RefreshCw size={15} className="spin" /> กำลัง sync...</> : <><Send size={15} /> Sync ตอนนี้</>}</button></div>
+    <TokenHealthCard onManage={() => setWizardOpen(true)} />
     <div className="connection-cta"><div className="connection-cta-icon"><Link2 size={20} /></div><div><strong>ยังไม่ได้เชื่อมต่อ Meta API จริงใช่ไหม?</strong><p>ใช้ตัวช่วย 6 ขั้นตอนเพื่อเตรียมค่าทั้งในระบบกลางและ Facebook ให้พร้อมก่อนส่ง Test Event</p></div><button className="secondary-button" onClick={() => setWizardOpen(true)}>เริ่มตั้งค่าการเชื่อมต่อ <ArrowUpRight size={14} /></button></div>
     <div className="api-metrics-grid"><MetaMetric label="Events received" value="184,294" detail="จากระบบที่ 1 · วันนี้" tone="coral" icon={Inbox} trend="+12.8%" /><MetaMetric label="Delivered to Meta" value="181,842" detail="success rate 98.7%" tone="cyan" icon={CheckCircle2} trend="+2.4%" /><MetaMetric label="In retry queue" value="247" detail="รอส่งซ้ำอัตโนมัติ" tone="amber" icon={RefreshCw} trend="-18.2%" /><MetaMetric label="Event Match Quality" value="86.4%" detail="phone + fbp + fbc" tone="violet" icon={Users} trend="+4.2%" /></div>
     <div className="delivery-funnel"><div className="funnel-step"><span className="funnel-number">01</span><div><strong>Received</strong><small>184,294 events</small></div><b>100%</b></div><div className="funnel-connector" /><div className="funnel-step"><span className="funnel-number">02</span><div><strong>Validated</strong><small>183,406 events</small></div><b>99.5%</b></div><div className="funnel-connector" /><div className="funnel-step"><span className="funnel-number">03</span><div><strong>Queued</strong><small>182,771 events</small></div><b>99.2%</b></div><div className="funnel-connector" /><div className="funnel-step highlight"><span className="funnel-number">04</span><div><strong>Delivered</strong><small>181,842 events</small></div><b>98.7%</b></div></div>
@@ -329,6 +366,8 @@ export default function Home() {
       {activeSection === "Event Stream" && <EventStreamPage />}
       {activeSection === "Segments" && <SegmentsPage segments={segments} openCreate={() => setCreateOpen(true)} />}
       {activeSection === "Meta Sync" && <MetaSyncPage onSync={runSync} syncing={syncing} />}
+      {activeSection === "Test Events" && <TestEventsPage />}
+      {activeSection === "Campaigns" && <CampaignsPage />}
       {activeSection === "Integrations" && <IntegrationsPage />}
       {activeSection === "Settings" && <SettingsPage />}
     </div></main>

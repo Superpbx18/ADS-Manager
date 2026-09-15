@@ -393,3 +393,30 @@ Prototype เดิมมี Overview, Event Stream, Segments และ Meta Syn
 [2]: https://developers.facebook.com/documentation/ads-commerce/marketing-api/audiences/guides/custom-audiences "Meta: Customer File Custom Audiences"
 
 [3]: https://developers.facebook.com/documentation/ads-commerce/conversions-api "Meta: Conversions API"
+
+
+## 14. การเชื่อม Business Manager เพื่อดู Campaign
+
+สามารถเชื่อม Business Manager และ Ad Account เพื่ออ่าน Campaign, Ad Set, Ad และ Ads Insights ได้ โดยควรเริ่มจากโหมด **Read-only** ก่อน ระบบกลางจะอ่านข้อมูลเพื่อเปรียบเทียบ Spend, Purchases, CPA และ ROAS แต่ไม่ควรให้สิทธิ์แก้ไขงบประมาณหรือเปิด/ปิดแคมเปญในระยะแรก
+
+สิทธิ์ที่เกี่ยวข้องโดยทั่วไปคือ `ads_read` สำหรับอ่านรายงานและข้อมูลโฆษณา และ `ads_management` หากต้องอ่าน/จัดการบัญชีโฆษณาในขอบเขตที่ Meta อนุญาต สิทธิ์จริงต้องผูกกับ App, Business และ Ad Account ที่ได้รับอนุมัติ รวมทั้ง Task Permission ของผู้ใช้หรือ System User ที่ทำ API call [4] [5]
+
+ควรแยก Connection ออกเป็น 3 ชุดเพื่อควบคุมความเสี่ยง: Token สำหรับ Conversions API, Token สำหรับ Audience Management และ Token สำหรับ Campaign Insights แบบ Read-only หากใช้ App/Business เดียวกัน ควรบันทึก Scope ที่ได้รับจริงและแสดงในหน้า UI ให้ผู้ดูแลตรวจสอบได้
+
+### Token Health
+
+ระบบควรตรวจ Token ด้วยรอบ Health Check ทุก 15 นาที และบันทึก `last_checked_at`, `expires_at`, `days_remaining`, `scopes`, `token_status` และ `last_error` โดยแบ่งสถานะเป็น `active`, `expiring_soon`, `expired`, `revoked` และ `permission_error` เมื่อเหลือ 14 วันควรแจ้งเตือนบน Dashboard และส่ง Notification ให้ผู้ดูแล เมื่อหมดอายุให้หยุดการส่งข้อมูลและแสดงสาเหตุอย่างชัดเจน แทนการ Retry แบบไม่มีที่สิ้นสุด
+
+อายุ Token ไม่ควร hard-code เพราะ Meta ระบุว่าอายุ Short-lived และ Long-lived Token อาจเปลี่ยนแปลงได้ โดย Long-lived User Token โดยทั่วไปอยู่ประมาณ 60 วัน ขณะที่ System User Token แบบมีอายุอาจมีรอบประมาณ 60 วันเช่นกัน จึงควรใช้ค่า `expires_at` และผลจาก Token Debugging เป็นแหล่งตัดสินใจหลัก [6] [7]
+
+### ข้อแนะนำเพิ่มเติม
+
+ควรเก็บ Campaign ID, Ad Set ID และ Ad ID ไว้ตั้งแต่ระบบที่ 1 ส่ง Event เข้ามา แล้วทำ Attribution Join กับ Insights ของ Meta ในระบบกลาง นอกจากนี้ควรมี Data Freshness บอกว่า Insights อัปเดตล่าสุดเมื่อใด เพราะข้อมูล Campaign และ Conversion อาจเข้ามาคนละเวลา ระบบควรเริ่มจาก Read-only ก่อน และเปิดสิทธิ์ `ads_management` เฉพาะเมื่อมี Use Case ที่ต้องแก้ Campaign จริงพร้อม Approval ที่ชัดเจน
+
+[4]: https://developers.facebook.com/documentation/ads-commerce/marketing-api/get-started/authorization "Meta: Marketing API Authorization"
+
+[5]: https://developers.facebook.com/documentation/ads-commerce/marketing-api/insights "Meta: Ads Insights API"
+
+[6]: https://developers.facebook.com/documentation/facebook-login/guides/access-tokens "Meta: Access Tokens for Meta Technologies"
+
+[7]: https://developers.facebook.com/docs/business-management-apis/system-users/install-apps-and-generate-tokens/ "Meta: Install Apps and Generate System User Tokens"
