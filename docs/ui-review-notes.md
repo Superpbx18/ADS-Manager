@@ -27,3 +27,7 @@ Added an ANALYSIS navigation group with eight menus: AI แนะนำ, A/B Tes
 ## Sidebar Scroll and Analysis Prototype Review
 
 The sidebar previously had a sticky 100vh layout without an internal overflow rule, so the longer Analysis navigation could be visually clipped. Added an independent vertical scrollbar with contained overscroll and preserved the connection card at the bottom of the scroll area. Browser screenshot now shows the scrollbar and all Analysis items are reachable. Added a visible `PROTOTYPE · SAMPLE DATA` badge to analysis pages. Confirmed AI แนะนำ renders the badge and contextual KPI/insight/guide content.
+
+## Ads Management and Automation Review
+
+Added two new sidebar groups: จัดการโฆษณา with Ads manager, AI Ad Creator, and AI Drafts; and อัตโนมัติ with Auto-Pause Rules, ตรวจสอบอัตโนมัติ, and รายงาน. Browser testing confirmed all six items render and navigation works for Ads manager and ตรวจสอบอัตโนมัติ. Each page shows a controlled-action prototype badge, KPI cards, key signal, guarded Data → ตรวจสอบ → Approval → Execute/Report flow, menu guide, and operations queue. Automation guidance explicitly starts with Alert/Simulation and avoids unapproved campaign or budget changes.
