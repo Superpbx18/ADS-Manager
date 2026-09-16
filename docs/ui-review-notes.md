@@ -23,3 +23,7 @@ The sidebar now has a workspace switcher showing three workspaces: Northstar Com
 ## Analysis Center Review
 
 Added an ANALYSIS navigation group with eight menus: AI แนะนำ, A/B Testing, Sale Funnel, Audience Insights, คัดกรองลูกค้า, Creative Performance, Dayparting, and GEO จังหวัด. Browser testing confirmed all eight menu labels render in the sidebar. AI แนะนำ opened with recommendation KPIs, insight card, trend chart, menu guide, and campaign breakdown. A/B Testing opened successfully and updated its title, KPIs, insight, and guide content without errors.
+
+## Sidebar Scroll and Analysis Prototype Review
+
+The sidebar previously had a sticky 100vh layout without an internal overflow rule, so the longer Analysis navigation could be visually clipped. Added an independent vertical scrollbar with contained overscroll and preserved the connection card at the bottom of the scroll area. Browser screenshot now shows the scrollbar and all Analysis items are reachable. Added a visible `PROTOTYPE · SAMPLE DATA` badge to analysis pages. Confirmed AI แนะนำ renders the badge and contextual KPI/insight/guide content.
