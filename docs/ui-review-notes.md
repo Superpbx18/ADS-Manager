@@ -19,3 +19,7 @@ The Integrations page now opens as Meta API Integration Center. Browser testing 
 ## Multi-workspace Review
 
 The sidebar now has a workspace switcher showing three workspaces: Northstar Commerce, Lumen Finance, and Sandbox Workspace. Browser testing confirmed the menu opens, selecting Lumen Finance updates the active workspace label, and Settings opens Workspace Management with per-workspace Meta Business details, members, event volume, connection status, and a workspace-scoped settings note.
+
+## Analysis Center Review
+
+Added an ANALYSIS navigation group with eight menus: AI แนะนำ, A/B Testing, Sale Funnel, Audience Insights, คัดกรองลูกค้า, Creative Performance, Dayparting, and GEO จังหวัด. Browser testing confirmed all eight menu labels render in the sidebar. AI แนะนำ opened with recommendation KPIs, insight card, trend chart, menu guide, and campaign breakdown. A/B Testing opened successfully and updated its title, KPIs, insight, and guide content without errors.

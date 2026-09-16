@@ -2,6 +2,12 @@ import { useMemo, useState } from "react";
 import type { LucideIcon } from "lucide-react";
 import {
   Activity,
+  Brain,
+  FlaskConical,
+  GitBranch,
+  MapPinned,
+  PanelTop,
+  PieChart,
   ArrowDownRight,
   ArrowUpRight,
   Bell,
@@ -17,7 +23,6 @@ import {
   ExternalLink,
   Filter,
   Gauge,
-  GitBranch,
   Inbox,
   Layers3,
   Link2,
@@ -44,7 +49,7 @@ import {
 } from "lucide-react";
 
 
-type Section = "ภาพรวม" | "Event Stream" | "Segments" | "Meta Sync" | "Test Events" | "Campaigns" | "Integrations" | "Settings";
+type Section = "ภาพรวม" | "Event Stream" | "Segments" | "Meta Sync" | "Test Events" | "Campaigns" | "AI แนะนำ" | "A/B Testing" | "Sale Funnel" | "Audience Insights" | "คัดกรองลูกค้า" | "Creative Performance" | "Dayparting" | "GEO จังหวัด" | "Integrations" | "Settings";
 type EventStatus = "ส่งแล้ว" | "รอส่ง" | "ถูกกรอง";
 
 type NavItem = {
@@ -60,6 +65,17 @@ const navItems: NavItem[] = [
   { label: "Meta Sync", caption: "Audience delivery", icon: Send },
   { label: "Test Events", caption: "Verify & debug", icon: ShieldCheck },
   { label: "Campaigns", caption: "Read-only insights", icon: TrendingUp },
+];
+
+const analysisItems: NavItem[] = [
+  { label: "AI แนะนำ", caption: "Next best actions", icon: Brain },
+  { label: "A/B Testing", caption: "Experiment lab", icon: FlaskConical },
+  { label: "Sale Funnel", caption: "Conversion journey", icon: GitBranch },
+  { label: "Audience Insights", caption: "Customer intelligence", icon: PieChart },
+  { label: "คัดกรองลูกค้า", caption: "Quality scoring", icon: Sparkles },
+  { label: "Creative Performance", caption: "Ad asset analysis", icon: PanelTop },
+  { label: "Dayparting", caption: "Time-of-day lift", icon: Clock3 },
+  { label: "GEO จังหวัด", caption: "Provincial performance", icon: MapPinned },
 ];
 
 const setupItems: NavItem[] = [
@@ -130,6 +146,10 @@ function Sidebar({ activeSection, setActiveSection, open, close }: { activeSecti
     <div className="nav-section-label">OPERATIONS</div>
     <nav className="nav-stack">
       {navItems.map(item => <NavButton key={item.label} item={item} active={activeSection === item.label} onClick={() => { setActiveSection(item.label); close(); }} />)}
+    </nav>
+    <div className="nav-section-label analysis-label">ANALYSIS</div>
+    <nav className="nav-stack analysis-nav">
+      {analysisItems.map(item => <NavButton key={item.label} item={item} active={activeSection === item.label} onClick={() => { setActiveSection(item.label); close(); }} />)}
     </nav>
     <div className="nav-section-label setup-label">CONFIGURATION</div>
     <nav className="nav-stack">
@@ -331,6 +351,22 @@ function DestinationRow({ icon: Icon, name, detail, status, color }: { icon: Luc
   return <div className="destination-row"><span className={`destination-icon ${color}`}><Icon size={16} /></span><div><strong>{name}</strong><small>{detail}</small></div><span className="connected-label"><i /> {status}</span></div>;
 }
 
+function AnalysisPage({ activeSection }: { activeSection: Section }) {
+  const analysis = [
+    { label: "AI แนะนำ", icon: Brain, color: "coral", title: "Next best actions", description: "ให้ระบบสรุปโอกาสและความเสี่ยงจาก Spend, Deposit Success และคุณภาพลูกค้า", kpis: [["3", "คำแนะนำใหม่"], ["฿18.4k", "งบที่มีโอกาสย้าย"], ["87%", "ความมั่นใจ"]], insight: "แนะนำเพิ่มงบให้ Q3 Deposit · Broad 15% เพราะ Cost / Deposit ต่ำกว่าค่าเฉลี่ย 22%", docs: "รวมข้อมูล Campaign, Conversion และ Customer Quality แล้วจัดลำดับ Action ที่มีผลกระทบสูงสุด ไม่ใช่การเปลี่ยน Budget อัตโนมัติ" },
+    { label: "A/B Testing", icon: FlaskConical, color: "violet", title: "Experiment lab", description: "เปรียบเทียบ Campaign, Creative, Audience หรือ Landing Page อย่างเป็นระบบ", kpis: [["12", "การทดลองทั้งหมด"], ["B +18.6%", "ผู้ชนะล่าสุด"], ["95%", "Confidence"]], insight: "Variant B มี Deposit Success rate 4.8% เทียบกับ A ที่ 3.9% จาก 14,280 sessions", docs: "กำหนด Hypothesis, Primary Metric, ระยะเวลา และกลุ่มควบคุมก่อนเริ่มทดสอบ เพื่อไม่สรุปผลจากข้อมูลที่ยังไม่เพียงพอ" },
+    { label: "Sale Funnel", icon: GitBranch, color: "cyan", title: "Conversion journey", description: "ดูการไหลของผู้ใช้ตั้งแต่คลิกโฆษณา จนถึงฝากเงินสำเร็จและฝากซ้ำ", kpis: [["8.4%", "Click → Register"], ["23.6%", "Register → Deposit"], ["฿1.84m", "Deposit value"]], insight: "จุดหลุดสูงสุดอยู่ระหว่างเลือกช่องทางฝากเงิน → ฝากสำเร็จ ลดลง 31.4%", docs: "วัด Conversion เป็นลำดับ Event เดียวกันทุก Campaign และแยก Pending ออกจาก Success เพื่อไม่ทำให้ Funnel ดูดีเกินจริง" },
+    { label: "Audience Insights", icon: PieChart, color: "violet", title: "Customer intelligence", description: "เข้าใจโครงสร้างลูกค้าตาม Value, Frequency, Recency และพฤติกรรมการฝาก", kpis: [["8,426", "High-value"], ["42.8%", "Repeat rate"], ["฿12.4k", "Avg deposit"]], insight: "กลุ่ม Repeat buyers มี LTV สูงกว่า New depositors 2.6 เท่า", docs: "ใช้ First-party data เพื่อวิเคราะห์กลุ่มลูกค้าและสร้าง Segment ที่ส่งกลับ Meta ได้ โดยต้องเคารพ Consent และนโยบายข้อมูล" },
+    { label: "คัดกรองลูกค้า", icon: Sparkles, color: "coral", title: "Quality scoring", description: "จัดลำดับคุณภาพลูกค้าจาก Deposit Success, จำนวนครั้งฝาก และยอดฝากสะสม", kpis: [["A", "Quality tier"], ["72.4", "Avg score"], ["2,180", "Qualified"]], insight: "ลูกค้าที่ฝากสำเร็จ 2 ครั้งขึ้นไปใน 90 วัน มีแนวโน้มเป็น High-value สูงสุด", docs: "สร้างคะแนนจากกติกาที่ตรวจสอบได้ เช่น จำนวนฝาก, ยอดสะสม, Recency และ Consent ไม่ควรใช้ AI ตัดสินใจเพียงอย่างเดียว" },
+    { label: "Creative Performance", icon: PanelTop, color: "amber", title: "Ad asset analysis", description: "เปรียบเทียบภาพ, วิดีโอ, Copy และ Hook ว่า Creative ใดสร้างลูกค้าคุณภาพ", kpis: [["4.2%", "Top CTR"], ["฿19.80", "Best cost/deposit"], ["18", "Creatives"]], insight: "Creative ‘Proof-led 03’ CTR สูงสุด แต่ ‘Offer-led 02’ สร้าง Deposit Value สูงกว่า 34%", docs: "เชื่อม Ad ID/Creative ID กับ Conversion จริง เพื่อวัดมากกว่า CTR และแยก Click performance ออกจาก Business outcome" },
+    { label: "Dayparting", icon: Clock3, color: "cyan", title: "Time-of-day lift", description: "วิเคราะห์ช่วงวันและเวลาที่ได้ Conversion คุณภาพ ต้นทุน และยอดฝากดีที่สุด", kpis: [["20:00–22:00", "Best window"], ["+28%", "Deposit lift"], ["฿23.10", "Cost / deposit"]], insight: "ช่วง 20:00–22:00 มี Deposit Success สูงกว่าค่าเฉลี่ย 28% แต่ต้องตรวจ Volume ก่อนเพิ่มงบ", docs: "จัดกลุ่มตาม Timezone ของ Workspace และใช้ข้อมูลหลายวันเพื่อหลีกเลี่ยงความผันผวนจากวันใดวันหนึ่ง" },
+    { label: "GEO จังหวัด", icon: MapPinned, color: "amber", title: "Provincial performance", description: "เปรียบเทียบคุณภาพลูกค้าและต้นทุนโฆษณาแยกตามจังหวัด", kpis: [["18", "จังหวัดที่มีข้อมูล"], ["฿16.40", "Best cost/deposit"], ["72%", "Data coverage"]], insight: "กรุงเทพฯ สร้าง Volume สูงสุด ขณะที่ชลบุรีมี Cost / Deposit ต่ำกว่าเฉลี่ย 19%", docs: "แสดงข้อมูลแบบ Aggregated เท่านั้น ใช้ Minimum Threshold และหลีกเลี่ยงการอนุมานตัวบุคคลจากพื้นที่ขนาดเล็ก" },
+  ];
+  const current = analysis.find(item => item.label === activeSection) || analysis[0];
+  const Icon = current.icon;
+  return <PageShell eyebrow="ANALYSIS" title={current.title} description={current.description}><div className="analysis-context-bar"><div><span className="analysis-context-icon"><Icon size={18} /></span><div><strong>{current.label}</strong><small>Northstar Commerce · ข้อมูลอัปเดตทุก 30 นาที</small></div></div><div className="analysis-filters"><button>Last 30 days <ChevronDown size={13} /></button><button>All campaigns <ChevronDown size={13} /></button><button className="primary-button"><Download size={13} /> Export</button></div></div><div className="analysis-kpis">{current.kpis.map(([value, label]) => <div className="analysis-kpi" key={label}><small>{label}</small><strong>{value}</strong><span>เทียบช่วงก่อนหน้า <b>+12.8%</b></span></div>)}</div><div className="analysis-main-grid"><section className="panel analysis-insight-panel"><div className="panel-heading"><div><div className="section-kicker">KEY SIGNAL</div><h2>สิ่งที่พบจากข้อมูล</h2></div><span className={`analysis-badge ${current.color}`}>INSIGHT</span></div><div className="analysis-big-icon"><Icon size={23} /></div><h3>{current.insight}</h3><p>ระบบสรุปจากข้อมูล First-party Event, Meta Ads Insights และ Customer Quality ของ Workspace ปัจจุบัน</p><button className="secondary-button">ดูรายละเอียดการคำนวณ <ArrowUpRight size={13} /></button></section><section className="panel analysis-chart-panel"><div className="panel-heading"><div><div className="section-kicker">PERFORMANCE TREND</div><h2>แนวโน้มประสิทธิภาพ</h2></div><span className="live-label">LIVE</span></div><div className="analysis-chart"><div className="chart-y"><span>100%</span><span>75%</span><span>50%</span><span>25%</span><span>0%</span></div><div className="chart-bars">{[42,58,49,68,61,78,70,86,76,91,82,95,88,98,90,96].map((height, i) => <span key={i} style={{height: `${height}%`}} className={i > 11 ? "hot" : ""} />)}</div></div><div className="chart-axis"><span>01 Sep</span><span>08 Sep</span><span>15 Sep</span><span>วันนี้</span></div></section></div><div className="analysis-doc-panel"><div className="analysis-doc-icon"><CircleHelp size={18} /></div><div><div className="section-kicker">MENU GUIDE</div><h2>เมนูนี้มีหน้าที่อะไร</h2><p>{current.docs}</p></div><button className="ghost-button">เปิด Doc ฉบับเต็ม <ArrowUpRight size={13} /></button></div><div className="analysis-table panel"><div className="panel-heading"><div><div className="section-kicker">CAMPAIGN BREAKDOWN</div><h2>เปรียบเทียบตาม Campaign</h2></div><button className="ghost-button">ดูทั้งหมด <ArrowUpRight size={13} /></button></div><div className="analysis-table-grid"><div className="analysis-table-head"><span>CAMPAIGN</span><span>PRIMARY SIGNAL</span><span>VALUE</span><span>STATUS</span></div>{[["Q3 Deposit · Broad", "Deposit Success", "฿25.51", "Scale"], ["High-value Lookalike 1%", "Quality score", "82.4", "Strong"], ["Retarget · Registered", "Register → Deposit", "3.08%", "Watch"], ["Promo Sep · Interest", "Cost / Deposit", "฿42.80", "Review"]].map((row, i) => <div className="analysis-table-row" key={row[0]}><strong><i className={`campaign-color c${i}`} />{row[0]}</strong><span>{row[1]}</span><b>{row[2]}</b><span className={`analysis-row-status s${i}`}>{row[3]}</span></div>)}</div></div></PageShell>;
+}
+
 function IntegrationsPage() {
   const [activeTab, setActiveTab] = useState<"all" | "meta">("meta");
   const [selectedStep, setSelectedStep] = useState(0);
@@ -403,6 +439,7 @@ export default function Home() {
       {activeSection === "Meta Sync" && <MetaSyncPage onSync={runSync} syncing={syncing} />}
       {activeSection === "Test Events" && <TestEventsPage />}
       {activeSection === "Campaigns" && <CampaignsPage />}
+      {["AI แนะนำ", "A/B Testing", "Sale Funnel", "Audience Insights", "คัดกรองลูกค้า", "Creative Performance", "Dayparting", "GEO จังหวัด"].includes(activeSection) && <AnalysisPage activeSection={activeSection} />}
       {activeSection === "Integrations" && <IntegrationsPage />}
       {activeSection === "Settings" && <SettingsPage />}
     </div></main>
@@ -410,4 +447,3 @@ export default function Home() {
     {toast && <div className="toast"><CheckCircle2 size={17} /><span>{toast}</span><button onClick={() => setToast("")}><X size={14} /></button></div>}
   </div>;
 }
-
