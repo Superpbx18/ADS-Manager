@@ -35,3 +35,7 @@ Added two new sidebar groups: จัดการโฆษณา with Ads manager
 ## Information Architecture Review
 
 Reorganized the sidebar into seven workflow groups: Overview, Data & Events, Customers & Audiences, Marketing Analytics, Ads & Activation, Automation, and Workspace. Groups are collapsible and show child counts; child labels include the job-to-be-done captions. Browser testing confirmed Data & Events collapses, Ads & Activation expands to show five children, and Ads Manager opens with its intended Campaign Operations view and guarded approval flow.
+
+## Data Quality and Event Mapping Review
+
+Added Data Quality and Event Mapping to Data & Events, bringing the group to four items. Data Quality browser review confirmed Quality Gate KPI cards, quality score breakdown, issues to review, validation checklist, scan action, and menu guide. Event Mapping browser review confirmed versioned mapping workflow from source event through Normalize to Meta Event and Delivery, registry table, review state, and mapping guide. Both pages clearly show prototype/sample-data status and keep the distinction between quality validation and destination mapping.
