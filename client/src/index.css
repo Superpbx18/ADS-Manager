@@ -204,33 +204,56 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
 @media (max-width:1050px) { .geo-layout { grid-template-columns:1fr; }.province-panel { display:block; }.geo-map-stage { min-height:390px; }.compare-grid { grid-template-columns:repeat(3,1fr); } }
 @media (max-width:650px) { .geo-status-bar,.geo-toolbar { align-items:flex-start; flex-direction:column; }.geo-toolbar-actions { width:100%; justify-content:space-between; }.geo-metric-switcher { width:100%; }.geo-map-stage { min-height:360px; }.geo-map-silhouette { height:300px; }.province-cell { min-width:76px; min-height:45px; padding:6px; }.province-cell span { font-size:7px; }.province-cell b { font-size:8px; }.geo-map-legend { bottom:10px; right:10px; }.compare-grid { grid-template-columns:1fr 1fr; }.compare-grid > div:last-child { grid-column:span 2; } }
 
-/* Comfortable UI scale: designed to feel like 110% browser zoom at 100% */
-@media (min-width: 1180px) {
-  body { zoom: 1.1; }
-  .app-shell { min-height: calc(100vh / 1.1); }
-}
-@media (min-width: 760px) and (max-width: 1179px) {
-  body { zoom: 1.05; }
-  .app-shell { min-height: calc(100vh / 1.05); }
-}
-@media (max-width: 759px) {
-  body { zoom: 1; }
-}
-
 /* GEO integration context and guardrails */
 .geo-filter-bar { display:flex; align-items:flex-end; flex-wrap:wrap; gap:8px; margin-bottom:13px; padding:11px 12px; border:1px solid rgba(56,214,209,.18); border-radius:7px; background:linear-gradient(110deg,rgba(56,214,209,.06),rgba(255,255,255,.02)); }.geo-filter-bar > div { min-width:220px; margin-right:auto; }.geo-filter-bar > div strong { display:block; margin-top:4px; color:#b4c8cc; font-size:8px; }.geo-filter-bar label { display:flex; flex-direction:column; gap:4px; color:#71859a; font-size:7px; }.geo-filter-bar select,.geo-filter-bar input { min-width:92px; height:27px; padding:0 7px; border:1px solid var(--line); border-radius:4px; color:#c8d8db; background:#0e1b28; font:8px 'Space Grotesk'; }.geo-filter-bar input { width:76px; min-width:76px; }.filter-result { padding:7px 8px; border-radius:4px; color:#5ddcd2; background:rgba(56,214,209,.09); font:8px 'Space Grotesk'; white-space:nowrap; }.sufficiency-banner { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:9px; padding:8px 9px; border:1px solid rgba(84,222,207,.24); border-radius:5px; }.sufficiency-banner span { color:#58ddd1; font:8px 'Space Grotesk'; }.sufficiency-banner small { color:#8296a4; font-size:7px; text-align:right; }.sufficiency-banner.low { border-color:rgba(255,115,93,.38); background:rgba(255,115,93,.06); }.sufficiency-banner.low span { color:#ff927f; }.sufficiency-banner.low small { color:#efaa9d; }.sufficiency-banner.sufficient { background:rgba(56,214,209,.035); }.compact-doc { margin-top:12px; }.geo-related-list button { cursor:pointer; }.full { width:100%; justify-content:center; margin-top:9px; }.entity-drawer .inspector-section { margin-top:16px; }.entity-drawer .relationship-chain { margin-top:15px; }
 @media (max-width:1050px) { .geo-filter-bar > div { flex-basis:100%; }.geo-filter-bar label { flex:1; }.geo-filter-bar select { width:100%; } }
 @media (max-width:650px) { .geo-filter-bar { align-items:stretch; }.geo-filter-bar label { min-width:calc(50% - 5px); }.geo-filter-bar > div { min-width:0; }.geo-filter-bar .filter-result { align-self:flex-start; }.sufficiency-banner { align-items:flex-start; flex-direction:column; }.sufficiency-banner small { text-align:left; } }
 .compare-grid small.better { color:#58ddd1; }.compare-grid small.worse { color:#ff927f; }.compare-grid small.flat { color:#8296a4; }
-/* User-selectable UI scale modes. The value is persisted per workspace. */
-body { zoom: 1; }
-body[data-ui-scale="compact"] { zoom: .94; }
-body[data-ui-scale="comfortable"] { zoom: 1.1; }
-body[data-ui-scale="large"] { zoom: 1.22; }
-@media (max-width:1179px) and (min-width:760px) { body[data-ui-scale="compact"] { zoom: .92; } body[data-ui-scale="comfortable"] { zoom: 1.05; } body[data-ui-scale="large"] { zoom: 1.12; } }
-@media (max-width:759px) { body, body[data-ui-scale="compact"], body[data-ui-scale="comfortable"], body[data-ui-scale="large"] { zoom: 1; } }
 :where(button, a, input, select, textarea, [tabindex="0"]):focus-visible { outline: 2px solid #62e4d6; outline-offset: 3px; box-shadow: 0 0 0 4px rgba(98,228,214,.16); }
 .skip-link { position:fixed; top:8px; left:8px; z-index:100; padding:8px 12px; border-radius:5px; color:#07151d; background:#62e4d6; transform:translateY(-150%); transition:transform .18s ease; font:11px 'Space Grotesk'; }.skip-link:focus { transform:translateY(0); }
 .real-geo-stage { min-height:430px; position:relative; overflow:hidden; }.real-thailand-map { width:100%; height:430px; display:block; }.geo-province-shape { stroke:#163746; stroke-width:.75; vector-effect:non-scaling-stroke; opacity:.84; cursor:pointer; transition:opacity .16s ease, stroke .16s ease, filter .16s ease; }.geo-province-shape:hover,.geo-province-shape:focus,.geo-province-shape.selected { opacity:1; stroke:#d9fffa; stroke-width:2; filter:drop-shadow(0 0 5px rgba(98,228,214,.5)); }.geo-province-shape.no-data { fill:#273442; opacity:.46; cursor:not-allowed; }.geo-province-shape.coral { fill:#e9786c; }.geo-province-shape.cyan { fill:#45c7bd; }.geo-province-shape.amber { fill:#d7a452; }.geo-province-shape.violet { fill:#8b78d7; }.geo-empty-state { padding:16px 10px; border:1px dashed rgba(255,255,255,.14); border-radius:5px; color:#8799a8; font-size:8px; text-align:center; }.preset-strip { display:flex; align-items:center; flex-wrap:wrap; gap:6px; margin:-5px 0 12px; }.preset-strip > span { display:inline-flex; overflow:hidden; border:1px solid rgba(98,228,214,.2); border-radius:4px; background:rgba(98,228,214,.05); }.preset-strip button { padding:5px 7px; border:0; color:#9ee8df; background:transparent; font:8px 'Space Grotesk'; cursor:pointer; }.preset-strip button + button { border-left:1px solid rgba(98,228,214,.2); color:#ff9f91; }.preset-strip small { color:#8ba2ab; font-size:8px; }.preset-name-input { width:98px; height:27px; padding:0 7px; border:1px solid var(--line); border-radius:4px; color:#c8d8db; background:#0e1b28; font:8px 'Space Grotesk'; }.preset-save-button { height:27px; padding:0 8px; font-size:8px; }.preset-select { min-width:105px; height:27px; padding:0 7px; border:1px solid var(--line); border-radius:4px; color:#c8d8db; background:#0e1b28; font:8px 'Space Grotesk'; }
 .ui-scale-controls { display:grid; grid-template-columns:repeat(3,1fr); gap:7px; min-width:300px; }.ui-scale-controls button { padding:10px; border:1px solid var(--line); border-radius:5px; color:#95aab4; background:rgba(255,255,255,.025); text-align:left; cursor:pointer; }.ui-scale-controls button.selected,.ui-scale-controls button:hover { border-color:#55ded1; background:rgba(84,222,207,.09); }.ui-scale-controls strong,.ui-scale-controls small { display:block; }.ui-scale-controls strong { color:#d7e7e9; font-size:9px; }.ui-scale-controls small { margin-top:4px; color:#7f96a3; font-size:7px; }.accessibility-checks { display:grid; gap:7px; min-width:300px; }.accessibility-checks span { display:flex; align-items:center; gap:6px; color:#a5b8bf; font-size:8px; }.accessibility-checks svg { color:#62e4d6; }.accessibility-checks b { color:#62e4d6; font:8px 'Space Grotesk'; }.ui-scale-section,.accessibility-section { align-items:flex-start; }
 @media (max-width:650px) { .real-thailand-map { height:340px; }.real-geo-stage { min-height:340px; }.ui-scale-controls,.accessibility-checks { min-width:0; width:100%; }.preset-name-input { flex:1; min-width:110px; } }
+
+
+/* Signalroom density system — native CSS sizing, no root transform and no browser zoom. */
+:root {
+  --ui-font-base: 1rem;
+  --ui-font-xs: .72rem;
+  --ui-font-sm: .82rem;
+  --ui-font-md: .92rem;
+  --ui-font-lg: 1.12rem;
+  --ui-space-1: .375rem;
+  --ui-space-2: .625rem;
+  --ui-space-3: .875rem;
+  --ui-space-4: 1.125rem;
+  --ui-space-5: 1.375rem;
+  --ui-control-h: 2.5rem;
+  --ui-row-h: 3.25rem;
+}
+body { font-size:var(--ui-font-base); }
+.app-shell { min-height:100vh; }
+.sidebar { width:270px; flex-basis:270px; padding:1.5rem 1rem 1.1rem; }
+.brand-row { gap:.75rem; padding:0 .7rem 1.45rem; }
+.brand-row strong { font-size:1.08rem; }.brand-row small { font-size:.52rem; }
+.workspace-switcher { padding:.8rem .75rem; margin-bottom:1.5rem; }.workspace-switcher small { font-size:.55rem; }.workspace-switcher strong { font-size:.78rem; max-width:155px; }
+.nav-section-label { padding:0 .75rem .7rem; font-size:.62rem; }.nav-stack { gap:.3rem; }.nav-button { gap:.75rem; padding:.72rem .75rem; min-height:2.9rem; }.nav-copy { gap:.28rem; }.nav-copy strong { font-size:.82rem; line-height:1.1; }.nav-copy small { font-size:.64rem; line-height:1.1; }.nav-icon { width:1.35rem; }.active-rail { top:.65rem; bottom:.65rem; }
+.connection-card { padding:.9rem .8rem; }.connection-title,.live-label { font-size:.58rem; }.connection-card > strong { font-size:.8rem; }.connection-card p,.connection-card button { font-size:.68rem; }.sidebar-footer { font-size:.68rem; }
+.topbar { height:4.5rem; padding:0 2.5rem; }.breadcrumbs { font-size:.75rem; }.topbar-actions { gap:.75rem; }.icon-button,.more-button { width:2.25rem; height:2.25rem; }
+.content { max-width:1450px; padding:2.75rem 2.5rem 4.5rem; }.hero-row,.page-intro { gap:2rem; margin-bottom:2.1rem; }.eyebrow { font-size:.62rem; }.hero-row h1,.page-intro h1 { margin:.9rem 0 .75rem; font-size:clamp(2.15rem,3.35vw,3.35rem); }.hero-row p,.page-intro p { font-size:.82rem; line-height:1.75; }
+.date-selector,.ghost-button,.secondary-button,.primary-button { min-height:var(--ui-control-h); }.date-selector { padding:.65rem .85rem; font-size:.7rem; }.secondary-button { padding:.65rem 1rem; font-size:.72rem; }.primary-button { padding:.7rem 1.05rem; font-size:.72rem; }.ghost-button { font-size:.72rem; }
+.kpi-grid { gap:1rem; margin-bottom:1.15rem; }.kpi-card { min-height:11.25rem; padding:1.2rem 1.2rem 1rem; }.kpi-icon { width:2.2rem; height:2.2rem; }.kpi-label { margin-top:1rem; font-size:.72rem; }.kpi-value-row { gap:.65rem; margin-top:.45rem; }.kpi-value-row strong { font-size:1.8rem; }.delta { font-size:.7rem; }.kpi-bottom { margin-top:.55rem; }.kpi-bottom small { font-size:.64rem; }
+.overview-grid { gap:1.15rem; margin-bottom:1.15rem; }.panel { padding:1.4rem; }.panel h2 { margin-top:.55rem; font-size:1.08rem; }.section-kicker { font-size:.62rem; }.panel-heading,.table-title-row { gap:1.25rem; }
+.pipeline-panel,.quality-panel { min-height:22rem; }.pipeline-summary { gap:1.4rem; margin:1.45rem 0 .8rem; }.pipeline-summary strong { font-size:1.4rem; }.pipeline-summary span { font-size:.64rem; }.summary-note { font-size:.7rem; }.summary-note small { font-size:.58rem; }
+/* Shared tables and rows: readable at browser zoom 100%. */
+table { font-size:var(--ui-font-sm); } th { padding:.8rem .9rem; font-size:var(--ui-font-xs); } td { padding:.85rem .9rem; min-height:var(--ui-row-h); }.analysis-table-row,.campaign-table-row,.ops-table-row,.test-history-row,.mapping-row,.sync-log-row,.history-row,.clickable-row { min-height:var(--ui-row-h); padding-top:.75rem; padding-bottom:.75rem; }.analysis-table-head,.campaign-table-head,.ops-table-head { padding:.75rem .9rem; font-size:var(--ui-font-xs); }
+.ads-manager-tabs,.console-tabs,.inspector-tabs,.integration-tabs,.wide-tabs { min-height:2.7rem; }.ads-manager-tabs button,.console-tabs button,.inspector-tabs button,.integration-tabs button,.wide-tabs button { padding:.75rem .9rem; font-size:var(--ui-font-sm); }
+.entity-drawer,.modal { font-size:var(--ui-font-base); }.drawer-head,.modal-head { padding:1.25rem 1.4rem; }.drawer-section { padding:1rem 1.4rem; }.drawer-subtitle,.modal-desc { font-size:var(--ui-font-sm); line-height:1.6; }.drawer-status-row,.match-signal-row,.guardrail-row { min-height:var(--ui-row-h); padding:.75rem 0; }.drawer-cta { min-height:var(--ui-control-h); }.settings-fields input,.settings-fields select { min-height:var(--ui-control-h); padding:.65rem .8rem; font-size:var(--ui-font-sm); }
+/* GEO controls follow the same scale, while its map remains fluid. */
+.geo-filter-bar select,.geo-filter-bar input { height:var(--ui-control-h); padding:0 .65rem; font-size:var(--ui-font-xs); }.geo-filter-bar label { font-size:var(--ui-font-xs); }.geo-tabs button { padding:.75rem .65rem; font-size:var(--ui-font-xs); }.geo-related-list button { padding:.75rem; }.geo-related-list strong { font-size:var(--ui-font-xs); }.geo-related-list small { font-size:.62rem; }.geo-related-list b { font-size:var(--ui-font-xs); }
+/* Responsive density: reduce only gutters/columns, never browser zoom. */
+@media (max-width:1179px) { .sidebar { width:250px; flex-basis:250px; }.topbar { padding:0 1.75rem; }.content { padding-left:1.75rem; padding-right:1.75rem; }.kpi-value-row strong { font-size:1.65rem; } }
+@media (max-width:759px) { .sidebar { width:min(330px,88vw); }.topbar { height:4rem; padding:0 1rem; }.content { padding:1.6rem 1rem 3rem; }.hero-row,.page-intro { align-items:flex-start; flex-direction:column; gap:1rem; margin-bottom:1.5rem; }.hero-row h1,.page-intro h1 { font-size:2rem; }.hero-row p,.page-intro p { font-size:.8rem; }.kpi-grid { grid-template-columns:repeat(2,1fr); gap:.75rem; }.kpi-card { min-height:9.5rem; padding:1rem; }.kpi-value-row strong { font-size:1.45rem; }.panel { padding:1rem; }.table-wrap,.analysis-table,.campaign-table-panel { overflow-x:auto; max-width:100%; }.entity-drawer,.modal { max-width:calc(100vw - 1rem); }.drawer-head,.modal-head { padding:1rem; }.drawer-section { padding:.85rem 1rem; } }
+@media (max-width:480px) { .kpi-grid { grid-template-columns:1fr; }.kpi-card { min-height:8.5rem; }.topbar-actions .live-clock { display:none; }.ads-manager-tabs,.console-tabs,.inspector-tabs,.wide-tabs { overflow-x:auto; } }
+
+.density-status-card { min-width:300px; padding:1rem; border:1px solid rgba(84,222,207,.3); border-radius:6px; background:linear-gradient(135deg,rgba(84,222,207,.11),rgba(255,255,255,.025)); }.density-status-card strong,.density-status-card small { display:block; }.density-status-card strong { color:#62e4d6; font:600 .82rem 'Space Grotesk'; }.density-status-card small { margin-top:.4rem; color:#91a8b2; font-size:.68rem; line-height:1.5; } @media (max-width:650px) { .density-status-card { min-width:0; width:100%; } }
