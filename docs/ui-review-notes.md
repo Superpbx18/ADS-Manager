@@ -43,3 +43,9 @@ Added Data Quality and Event Mapping to Data & Events, bringing the group to fou
 ## Sidebar Readability Review
 
 Increased desktop Sidebar width from 246px to 300px, with a 280px tablet fallback and max 330px mobile drawer. Increased brand, workspace switcher, group labels, child labels, icons, row heights, and click targets. Preserved independent vertical scrolling and collapsible workflow groups. Browser screenshot confirms the larger Sidebar remains readable while the main Dashboard stays usable; TypeScript and production build passed.
+
+## Interactive Operations Foundation Review
+
+Added an End-to-End Demo Scenario to the Overview page with nine linked steps: Ad Traffic, Event Received, Data Quality, Event Mapping, Meta Delivery, Customer Segment, Campaign Analysis, AI Recommendation, and Simulated Result. Each step uses shared sample IDs such as `evt_01JXYZ123`, `cmp_q3_deposit`, and `usr_123456` and can be selected or advanced through a simulated action.
+
+Added an Entity Inspector Drawer for the current scenario step. It shows entity context, relationships across Workspace/Campaign/Customer/Event, sample-data status, a completed result state, and a navigation action into the related screen. The Overview is now the default entry page so the interactive flow is immediately visible. Browser testing confirmed the scenario renders, step navigation works, the Detail Drawer opens, and its related-page CTA is available. TypeScript and production build passed.
