@@ -142,48 +142,29 @@ function NavButton({ item, active, onClick }: { item: NavItem; active: boolean; 
 function Sidebar({ activeSection, setActiveSection, open, close }: { activeSection: Section; setActiveSection: (section: Section) => void; open: boolean; close: () => void }) {
   const [workspaceOpen, setWorkspaceOpen] = useState(false);
   const [workspace, setWorkspace] = useState("Northstar Commerce");
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({ data: true, customers: true, analytics: true, activation: false, automation: false, workspace: false });
   const workspaces = [
     { name: "Northstar Commerce", code: "N", meta: "Meta Business · connected", color: "coral" },
     { name: "Lumen Finance", code: "L", meta: "Meta Business · connected", color: "cyan" },
     { name: "Sandbox Workspace", code: "S", meta: "Test environment", color: "violet" },
   ];
   const current = workspaces.find(item => item.name === workspace) || workspaces[0];
+  const groups = [
+    { key: "data", label: "Data & Events", icon: Activity, items: [{ label: "Event Stream", caption: "รับ Event จากระบบที่ 1", icon: Activity }, { label: "Test Events", caption: "ตรวจ Payload ก่อนส่ง", icon: ShieldCheck }] },
+    { key: "customers", label: "Customers & Audiences", icon: Users, items: [{ label: "Segments", caption: "สร้างกลุ่มลูกค้า", icon: Layers3 }, { label: "Audience Insights", caption: "วิเคราะห์ลูกค้า", icon: PieChart }, { label: "คัดกรองลูกค้า", caption: "Customer quality", icon: Sparkles }] },
+    { key: "analytics", label: "Marketing Analytics", icon: TrendingUp, items: [{ label: "Campaigns", caption: "Campaign overview", icon: TrendingUp }, { label: "Sale Funnel", caption: "Conversion journey", icon: GitBranch }, { label: "Creative Performance", caption: "Creative analysis", icon: PanelTop }, { label: "A/B Testing", caption: "Experiment lab", icon: FlaskConical }, { label: "Dayparting", caption: "Time analysis", icon: Clock3 }, { label: "GEO จังหวัด", caption: "Provincial analysis", icon: MapPinned }, { label: "AI แนะนำ", caption: "Recommendations", icon: Brain }] },
+    { key: "activation", label: "Ads & Activation", icon: Target, items: [{ label: "Ads manager", caption: "Campaign operations", icon: Target }, { label: "AI Ad Creator", caption: "Generate concepts", icon: Sparkles }, { label: "AI Drafts", caption: "Review before publish", icon: Inbox }, { label: "Meta Sync", caption: "Conversions & delivery", icon: Send }, { label: "Integrations", caption: "Meta connections", icon: Network }] },
+    { key: "automation", label: "Automation", icon: Zap, items: [{ label: "Auto-Pause Rules", caption: "Guardrail rules", icon: ShieldCheck }, { label: "ตรวจสอบอัตโนมัติ", caption: "Health checks", icon: RefreshCw }, { label: "รายงาน", caption: "Scheduled reports", icon: TrendingUp }] },
+    { key: "workspace", label: "Workspace", icon: Settings2, items: [{ label: "Settings", caption: "Workspace controls", icon: Settings2 }] },
+  ];
+  const select = (section: Section) => { setActiveSection(section); close(); };
   return <aside className={`sidebar ${open ? "mobile-open" : ""}`}>
-    <div className="brand-row">
-      <div className="brand-mark"><span /><span /><i /></div>
-      <div><strong>signal<span>room</span></strong><small>customer data ops</small></div>
-      <button className="mobile-close" onClick={close} aria-label="ปิดเมนู"><X size={18} /></button>
-    </div>
-    <div className="workspace-switcher-wrap"><button className="workspace-switcher" onClick={() => setWorkspaceOpen(!workspaceOpen)}><div className={`workspace-avatar ${current.color}`}>{current.code}</div><div><small>WORKSPACE</small><strong>{current.name}</strong></div><ChevronDown size={15} className={workspaceOpen ? "rotate-180" : ""} /></button>{workspaceOpen && <div className="workspace-menu"><div className="workspace-menu-label">YOUR WORKSPACES</div>{workspaces.map(item => <button key={item.name} className={item.name === workspace ? "selected" : ""} onClick={() => { setWorkspace(item.name); setWorkspaceOpen(false); }}><span className={`workspace-avatar mini ${item.color}`}>{item.code}</span><span><strong>{item.name}</strong><small>{item.meta}</small></span>{item.name === workspace && <Check size={14} />}</button>)}<div className="workspace-menu-divider" /><button className="workspace-manage" onClick={() => { setWorkspaceOpen(false); setActiveSection("Settings"); }}><Settings2 size={14} /> จัดการ Workspaces <ArrowUpRight size={13} /></button></div>}</div>
-    <div className="nav-section-label">OPERATIONS</div>
-    <nav className="nav-stack">
-      {navItems.map(item => <NavButton key={item.label} item={item} active={activeSection === item.label} onClick={() => { setActiveSection(item.label); close(); }} />)}
-    </nav>
-    <div className="nav-section-label analysis-label">ANALYSIS</div>
-    <nav className="nav-stack analysis-nav">
-      {analysisItems.map(item => <NavButton key={item.label} item={item} active={activeSection === item.label} onClick={() => { setActiveSection(item.label); close(); }} />)}
-    </nav>
-    <div className="nav-section-label ads-label">จัดการโฆษณา</div>
-    <nav className="nav-stack ads-nav">
-      {adsItems.map(item => <NavButton key={item.label} item={item} active={activeSection === item.label} onClick={() => { setActiveSection(item.label); close(); }} />)}
-    </nav>
-    <div className="nav-section-label automation-label">อัตโนมัติ</div>
-    <nav className="nav-stack automation-nav">
-      {automationItems.map(item => <NavButton key={item.label} item={item} active={activeSection === item.label} onClick={() => { setActiveSection(item.label); close(); }} />)}
-    </nav>
-    <div className="nav-section-label setup-label">CONFIGURATION</div>
-    <nav className="nav-stack">
-      {setupItems.map(item => <NavButton key={item.label} item={item} active={activeSection === item.label} onClick={() => { setActiveSection(item.label); close(); }} />)}
-    </nav>
-    <div className="sidebar-spacer" />
-    <div className="connection-card">
-      <div className="connection-title"><span className="pulse-dot" /> META CONNECTION <span className="live-label">LIVE</span></div>
-      <strong>Pixel + CAPI</strong>
-      <p>รับ Event ปกติ · Match rate 86.4%</p>
-      <div className="connection-progress"><span /></div>
-      <button onClick={() => setActiveSection("Meta Sync")}>ดูสถานะการ sync <ArrowUpRight size={14} /></button>
-    </div>
-    <div className="sidebar-footer"><span><LockKeyhole size={13} /> PDPA controls on</span><button aria-label="ช่วยเหลือ"><CircleHelp size={15} /></button></div>
+    <div className="brand-row"><div className="brand-mark"><span /><span /><i /></div><div><strong>signal<span>room</span></strong><small>customer data ops</small></div><button className="mobile-close" onClick={close} aria-label="ปิดเมนู"><X size={18} /></button></div>
+    <div className="workspace-switcher-wrap"><button className="workspace-switcher" onClick={() => setWorkspaceOpen(!workspaceOpen)}><div className={`workspace-avatar ${current.color}`}>{current.code}</div><div><small>WORKSPACE</small><strong>{current.name}</strong></div><ChevronDown size={15} className={workspaceOpen ? "rotate-180" : ""} /></button>{workspaceOpen && <div className="workspace-menu"><div className="workspace-menu-label">YOUR WORKSPACES</div>{workspaces.map(item => <button key={item.name} className={item.name === workspace ? "selected" : ""} onClick={() => { setWorkspace(item.name); setWorkspaceOpen(false); }}><span className={`workspace-avatar mini ${item.color}`}>{item.code}</span><span><strong>{item.name}</strong><small>{item.meta}</small></span>{item.name === workspace && <Check size={14} />}</button>)}<div className="workspace-menu-divider" /><button className="workspace-manage" onClick={() => { setWorkspaceOpen(false); select("Settings"); }}><Settings2 size={14} /> จัดการ Workspace <ArrowUpRight size={13} /></button></div>}</div>
+    <div className="nav-stack primary-nav"><NavButton item={{ label: "ภาพรวม", caption: "Control room", icon: Gauge }} active={activeSection === "ภาพรวม"} onClick={() => select("ภาพรวม")} /></div>
+    <div className="nav-section-label ia-label">WORKFLOWS</div>
+    <nav className="ia-nav">{groups.map(group => { const GroupIcon = group.icon; const isOpen = expanded[group.key]; const activeInGroup = group.items.some(item => item.label === activeSection); return <div className="ia-group" key={group.key}><button className={`ia-group-button ${activeInGroup ? "has-active" : ""}`} onClick={() => setExpanded(prev => ({ ...prev, [group.key]: !prev[group.key] }))}><span className="ia-group-icon"><GroupIcon size={14} /></span><strong>{group.label}</strong><span className="ia-count">{group.items.length}</span><ChevronDown size={13} className={isOpen ? "rotate-180" : ""} /></button>{isOpen && <div className="ia-children">{group.items.map(item => <NavButton key={item.label} item={item as NavItem} active={activeSection === item.label} onClick={() => select(item.label as Section)} />)}</div>}</div>})}</nav>
+    <div className="sidebar-spacer" /><div className="connection-card"><div className="connection-title"><span className="pulse-dot" /> META CONNECTION <span className="live-label">LIVE</span></div><strong>Pixel + CAPI</strong><p>รับ Event ปกติ · Match rate 86.4%</p><div className="connection-progress"><span /></div><button onClick={() => select("Meta Sync")}>ดูสถานะการ sync <ArrowUpRight size={14} /></button></div><div className="sidebar-footer"><span><LockKeyhole size={13} /> PDPA controls on</span><button aria-label="ช่วยเหลือ"><CircleHelp size={15} /></button></div>
   </aside>;
 }
 

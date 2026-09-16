@@ -31,3 +31,7 @@ The sidebar previously had a sticky 100vh layout without an internal overflow ru
 ## Ads Management and Automation Review
 
 Added two new sidebar groups: จัดการโฆษณา with Ads manager, AI Ad Creator, and AI Drafts; and อัตโนมัติ with Auto-Pause Rules, ตรวจสอบอัตโนมัติ, and รายงาน. Browser testing confirmed all six items render and navigation works for Ads manager and ตรวจสอบอัตโนมัติ. Each page shows a controlled-action prototype badge, KPI cards, key signal, guarded Data → ตรวจสอบ → Approval → Execute/Report flow, menu guide, and operations queue. Automation guidance explicitly starts with Alert/Simulation and avoids unapproved campaign or budget changes.
+
+## Information Architecture Review
+
+Reorganized the sidebar into seven workflow groups: Overview, Data & Events, Customers & Audiences, Marketing Analytics, Ads & Activation, Automation, and Workspace. Groups are collapsible and show child counts; child labels include the job-to-be-done captions. Browser testing confirmed Data & Events collapses, Ads & Activation expands to show five children, and Ads Manager opens with its intended Campaign Operations view and guarded approval flow.
