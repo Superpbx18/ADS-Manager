@@ -39,3 +39,7 @@ Reorganized the sidebar into seven workflow groups: Overview, Data & Events, Cus
 ## Data Quality and Event Mapping Review
 
 Added Data Quality and Event Mapping to Data & Events, bringing the group to four items. Data Quality browser review confirmed Quality Gate KPI cards, quality score breakdown, issues to review, validation checklist, scan action, and menu guide. Event Mapping browser review confirmed versioned mapping workflow from source event through Normalize to Meta Event and Delivery, registry table, review state, and mapping guide. Both pages clearly show prototype/sample-data status and keep the distinction between quality validation and destination mapping.
+
+## Sidebar Readability Review
+
+Increased desktop Sidebar width from 246px to 300px, with a 280px tablet fallback and max 330px mobile drawer. Increased brand, workspace switcher, group labels, child labels, icons, row heights, and click targets. Preserved independent vertical scrolling and collapsible workflow groups. Browser screenshot confirms the larger Sidebar remains readable while the main Dashboard stays usable; TypeScript and production build passed.
